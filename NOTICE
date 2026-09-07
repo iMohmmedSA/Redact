@@ -1,0 +1,72 @@
+Lex Guard — Redact
+Copyright (c) 2026 iMohmmedSA
+
+This product bundles third-party components, listed below with the licence
+each is distributed under. Versions are those pinned in
+frontend/package-lock.json at the time of writing; the authoritative list is
+always that lockfile plus the contents of frontend/public/.
+
+Apache License 2.0 components require that this notice be carried with any
+redistribution of the build. The full text of each licence ships inside the
+corresponding package under frontend/node_modules/, and the canonical texts
+are at https://www.apache.org/licenses/LICENSE-2.0 and
+https://opensource.org/licenses/MIT.
+
+---------------------------------------------------------------------------
+Model and OCR data (shipped in the build, under frontend/public/)
+---------------------------------------------------------------------------
+
+GLiNER multilingual NER model                              Apache License 2.0
+  onnx-community/gliner_multi-v2.1, model_fp16.onnx
+  Pinned revision 6ddaeb9413b0e71ad8457da1aab378a165b24058
+  https://huggingface.co/onnx-community/gliner_multi-v2.1
+  Derived from the GLiNER models of Zaratiana et al.
+
+Tesseract traineddata, `eng` and `ara` (tessdata_best 4.1.0)  Apache License 2.0
+  https://github.com/tesseract-ocr/tessdata_best
+
+ONNX Runtime Web WebAssembly binaries                                     MIT
+  frontend/public/ort-gliner/ — see onnxruntime-web below.
+
+---------------------------------------------------------------------------
+Runtime libraries
+---------------------------------------------------------------------------
+
+pdfjs-dist                6.3.289      Apache License 2.0   Mozilla Foundation
+tesseract.js              7.0.0        Apache License 2.0
+tesseract.js-core         7.0.0        Apache License 2.0
+@xenova/transformers      2.17.2       Apache License 2.0
+onnxruntime-web           1.19.2       MIT                  Microsoft
+onnxruntime-common        1.29.0       MIT                  Microsoft
+gliner                    0.0.19       MIT
+pdf-lib                   1.17.1       MIT
+fflate                    0.8.3        MIT
+react                     19.2.8       MIT                  Meta Platforms
+react-dom                 19.2.8       MIT                  Meta Platforms
+
+Build and test tooling (Vite, TypeScript, Tailwind CSS, Vitest, oxlint and
+their dependencies) is not part of the shipped artifact and is not listed
+here; see frontend/package.json.
+
+---------------------------------------------------------------------------
+Evaluation data (not shipped)
+---------------------------------------------------------------------------
+
+KhalidAlharbi377/pii-detection-multisource-en-saudi-arabic       CC BY 4.0
+  https://huggingface.co/datasets/KhalidAlharbi377/pii-detection-multisource-en-saudi-arabic
+  Downloaded on demand by `npm run eval:fetch` into frontend/eval/data/,
+  which is gitignored. It is used to score the detectors and is not part of
+  the application or its build output.
+
+---------------------------------------------------------------------------
+A note on the GitHub Pages demo build
+---------------------------------------------------------------------------
+
+The self-hosted build (`npm run build`) serves every component above from
+its own origin and makes no network requests at runtime. The demo build
+(`npm run build:github`) instead loads the GLiNER model from Hugging Face
+and the OCR assets from jsDelivr on first use, because the 580MB model
+cannot be hosted on GitHub Pages. Documents are never sent anywhere in
+either build; only the model download touches the network. See the
+Content-Security-Policy in the built index.html, which states exactly which
+origins each build is permitted to contact.
